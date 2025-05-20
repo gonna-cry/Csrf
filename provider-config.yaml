@@ -29,7 +29,7 @@ telegram:
     telegram_api_key: "8001910878:AAHV7sLYtsKhMRTcxaTtN1OABhwPeuofmgI"
     telegram_chat_id: "6729179510"
     telegram_format: "{{data}}"
-    telegram_parsemode: "Markdown" # None/Markdown/MarkdownV2/HTML (https://core.telegram.org/bots/api#formatting-options)
+    telegram_parsemode: "Markdown"
 
 pushover:
   - id: "push"
